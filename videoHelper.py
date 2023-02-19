@@ -17,12 +17,12 @@ user_id = ""
 headers = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.67 Safari/537.36',
     'Content-Type': 'application/json',
-    'Cookie': 'csrftoken=' + csrftoken + '; sessionid=' + sessionid + '; university_id=3078; platform_id=3',
+    'Cookie': 'csrftoken=' + csrftoken + '; sessionid=' + sessionid + '; university_id=3288; platform_id=3',
     'x-csrftoken': csrftoken,
     'sec-fetch-dest': 'empty',
     'sec-fetch-mode': 'cors',
     'sec-fetch-site': 'same-origin',
-    'university-id': '3078',
+    'university-id': '3288',
     'xtbz': 'cloud'
 }
 
@@ -37,8 +37,8 @@ leaf_type = {
 def one_video_watcher(video_id,video_name,cid,user_id,classroomid,skuid):
     video_id = str(video_id)
     classroomid = str(classroomid)
-    url = "https://gsscut.yuketang.cn/video-log/heartbeat/"
-    get_url = "https://gsscut.yuketang.cn/video-log/get_video_watch_progress/?cid="+str(cid)+"&user_id="+user_id+"&classroom_id="+classroomid+"&video_type=video&vtype=rate&video_id=" + str(video_id) + "&snapshot=1&term=latest&uv_id=3078"
+    url = "https://plaieu.yuketang.cn/video-log/heartbeat/"
+    get_url = "https://plaieu.yuketang.cn/video-log/get_video_watch_progress/?cid="+str(cid)+"&user_id="+user_id+"&classroom_id="+classroomid+"&video_type=video&vtype=rate&video_id=" + str(video_id) + "&snapshot=1&term=latest&uv_id=3288"
     progress = requests.get(url=get_url, headers=headers)
     if_completed = '0'
     try:
@@ -112,10 +112,11 @@ def one_video_watcher(video_id,video_name,cid,user_id,classroomid,skuid):
         print("学习进度为：" + str(float(val)*100) + "%/100%" + " last_point: " + str(video_frame))
         time.sleep(0.7)
     print("视频"+video_id+" "+video_name+"学习完成！")
+    time.sleep(0)
     return 1
 
 def get_videos_ids(course_name,classroom_id,course_sign):
-    get_homework_ids = "https://gsscut.yuketang.cn/mooc-api/v1/lms/learn/course/chapter?cid="+str(classroom_id)+"&term=latest&uv_id=3078&sign="+course_sign
+    get_homework_ids = "https://plaieu.yuketang.cn/mooc-api/v1/lms/learn/course/chapter?cid="+str(classroom_id)+"&term=latest&uv_id=3288&sign="+course_sign
     homework_ids_response = requests.get(url=get_homework_ids, headers=headers)
     homework_json = json.loads(homework_ids_response.text)
     homework_dic = {}
@@ -140,7 +141,7 @@ if __name__ == "__main__":
     your_courses = []
 
     # 首先要获取用户的个人ID，即user_id,该值在查询用户的视频进度时需要使用
-    user_id_url = "https://gsscut.yuketang.cn/edu_admin/check_user_session/"
+    user_id_url = "https://plaieu.yuketang.cn/edu_admin/check_user_session/"
     id_response = requests.get(url=user_id_url, headers=headers)
     try:
         user_id = re.search(r'"user_id":(.+?)}', id_response.text).group(1).strip()
@@ -149,8 +150,8 @@ if __name__ == "__main__":
         raise Exception("也许是网路问题，获取不了user_id,请试着重新运行!!! please re-run this program!")
 
     # 然后要获取教室id
-    get_classroom_id = "https://gsscut.yuketang.cn/mooc-api/v1/lms/user/user-courses/?status=1&page=1&no_page=1&term=latest&uv_id=3078"
-    submit_url = "https://gsscut.yuketang.cn/mooc-api/v1/lms/exercise/problem_apply/?term=latest&uv_id=3078"
+    get_classroom_id = "https://plaieu.yuketang.cn/mooc-api/v1/lms/user/user-courses/?status=1&page=1&no_page=1&term=latest&uv_id=3288"
+    submit_url = "https://plaieu.yuketang.cn/mooc-api/v1/lms/exercise/problem_apply/?term=latest&uv_id=3288"
     classroom_id_response = requests.get(url=get_classroom_id, headers=headers)
     try:
         for ins in json.loads(classroom_id_response.text)["data"]["product_list"]:
